@@ -1,14 +1,14 @@
 # Router
 Classe php para trabalhar REST API
 
-## CARREGADOR DE TEMPLATE
+## Carregador de template
 
 ```
 	Router::view("home.html");
 ```
 
 
-## ALTERAÇÃO DO CONTEÚDO DO TEMPLATE COM BASE NAS FLAGS (TEMPLATE VIEW)
+## Alteração do conteúdo do template com base nas flags (Template View)
 
 ```
 	Router::view("home.html", ["#{titulo}#" => "Bem vindo ao site"] );
@@ -24,7 +24,7 @@ Classe php para trabalhar REST API
 ```
 
 
-## HTTP GET COM PARÂMETROS DINÂMICOS NO ENDPOINT | {paramDinamic}
+## HTTP GET Com parâmetros dinâmicos no endpoint | {paramDinamic}
 
 ```
 	Router::get('/idUsuario/{cpf}', function($params){
@@ -33,12 +33,11 @@ Classe php para trabalhar REST API
 ```
 
 
-## HTTP POST | JSON
+## HTTP POST | x-www-form-urlencoded
 
 ```
-	Router::post('/recebejson', function(){
-		$dados = Router::getJson();
-		echo $dados->nome;
+	Router::post('/dados', function($dados){
+		print_r($dados);
 	});
 ```
 
@@ -46,18 +45,18 @@ Classe php para trabalhar REST API
 ## HTTP PUT | x-www-form-urlencoded
 
 ```
-	Router::put('/recebeDados', function($dados){
+	Router::put('/dados', function($dados){
 		print_r($dados);
 	});
 ```
 
 
-## RECUPERANDO JSON
+## Recuperando Json
 
 ```
 	Router::getJson();
 	
-	### EXEMPLO DE USO:
+	### Ex:
 	
 	Router::post('/recebejson', function(){
 		$dados = Router::getJson();
@@ -66,7 +65,7 @@ Classe php para trabalhar REST API
 ```
 
 
-## CONFIGURAÇÃO DEV | error_reporting, display_errors 
+## Configuração Dev | error_reporting, display_errors 
 
 ```
 	Router::dev();
@@ -74,7 +73,7 @@ Classe php para trabalhar REST API
 
 
 
-## PÁGINA NÃO ENCONTRADA | DEVERÁ FICA NA ÚLTIMA LINHA DO ARQUIVO
+## Página não encontrada | Deixar na última linha do arquivo
 
 ```
 	Router::notFound("notFound.html");
