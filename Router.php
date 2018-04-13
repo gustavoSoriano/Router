@@ -96,10 +96,16 @@
 			if( $_SERVER['REQUEST_METHOD'] == "DELETE" )self::testURI($_url, $_callback);
 		}
 		
+
+		/**
+		 * Recebe um json enviado no corpo da requisição
+		 * Pode ser ou não stringify
+		 */
 		public static function getJson()
 		{
 			$input  = file_get_contents("php://input");
-			return json_decode($input);
+			$input  = json_decode($input);
+			return (gettype( $input ) == "string") ? json_decode($input) : $input;
 		}
 
 		public static function notFound( $template )
@@ -115,10 +121,67 @@
 				echo str_replace(array_keys($_flags), array_values($_flags), file_get_contents($_tpl) );
 		}	
 		
+
 		public static function dev()
 		{
 			error_reporting(E_ALL);
 			ini_set("display_errors", 1);
 		}
+
+
+		/**
+		 * Tratativas de erro e finalização do fluxo
+		 */
+		public static function Err( $message )
+		{
+			echo json_encode( array("error" => $message ) );
+			exit;
+		}
+
+		/***
+		 * 
+		 * Gerador de JWT
+		 * Cria Jwt baseado na data atual do servidor
+		 * O token torna-se inválido quando a data é alterada
+		 * 
+		 */
+		public static function Jwt()
+		{
+			$vencimento= array("vencimento"=>Date('d:m:Y'));
+			$key       = 'soriano.dev';
+			$header    = array('typ'  => 'JWT','alg'  => 'HS256');
+			$header    = json_encode($header);
+			$header    = base64_encode($header);
+			$dados     = json_encode($vencimento);
+			$dados     = base64_encode($dados);
+			$signature = hash_hmac('sha256', "$header.$dados", $key, true);
+			$signature = base64_encode($signature);
+			$token     = "$header.$dados.$signature";
+			$token     = str_replace("/", "-xx-", $token);
+			$token     = str_replace("+", "-ww-", $token);
+			return json_encode( array( 'token' => $token ) );
+		}
+
+
+		/**
+		 * Valida o jwt que vem no header da requisição
+		 * O jwt deverá ser enviado no Authorization
+		 */
+		public static function validateJwt()
+		{
+			if( isset( apache_request_headers()["Authorization"] ) ) 
+			{
+				$token=apache_request_headers()["Authorization"];
+
+				if( ($token === json_decode( self::jwt() )->token) == false ) 
+					self::Err("Invalid-jwt");
+			}
+			else
+				self::Err("No-Authorization");
+			
+		}
+
+		
 	}
 ?>
+
