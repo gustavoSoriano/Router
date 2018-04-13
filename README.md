@@ -15,6 +15,22 @@ Classe php para trabalhar REST API
 ```
 
 
+## JWT | Cria Jwt
+
+```
+	Router::Jwt();
+```
+
+
+## JWT | Valida o Jwt
+#### Enviar o jwt no Authorization, header da requisição.
+Se o jwt for inválido irá cortar o fluxo da aplicação e gerar um erro
+
+```
+	Router::validateJwt();
+```
+
+
 ## HTTP GET
 
 ```
@@ -51,7 +67,7 @@ Classe php para trabalhar REST API
 ```
 
 
-## Recuperando Json
+## Recuperando Json no corpo da requisição
 
 ```
 	Router::getJson();
