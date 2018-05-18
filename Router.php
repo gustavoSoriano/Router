@@ -4,6 +4,7 @@
 		protected static $params   = array();
 		protected static $folder;
 		protected static $notFound = true;
+		protected static $input;
 
 		private static function compareParams($URI, $endPoint)
 		{
@@ -35,9 +36,11 @@
 
 		private static function testURI($endPoint, $_callback)
 		{
+			self::$input = file_get_contents("php://input");
+			
 			//recupera o nome do dirroot, pois esta na uri. Mas é necessário remover \app\server
 			self::$folder = __DIR__;
-			self::$folder = str_replace("\app\server", "", self::$folder);
+			self::$folder = str_replace("\app\server\controllers", "", self::$folder);
 			self::$folder = "/".basename(self::$folder);
 
 			//removo a folder root da uri
@@ -63,7 +66,7 @@
 				if($_SERVER['REQUEST_METHOD'] == "PUT") 
 				{
 					$arrayPut = array();
-					parse_str(file_get_contents("php://input"), $arrayPut);
+					parse_str(self::$input, $arrayPut);
 					foreach($arrayPut as $key => $value)
 					{
 						self::$params[$key] = $value;
@@ -99,13 +102,11 @@
 
 		/**
 		 * Recebe um json enviado no corpo da requisição
-		 * Pode ser ou não stringify
+		 * Deverá ser stringify
 		 */
 		public static function getJson()
 		{
-			$input  = file_get_contents("php://input");
-			$input  = json_decode($input);
-			return (gettype( $input ) == "string") ? json_decode($input) : $input;
+			return json_decode( self::$input );
 		}
 
 		public static function notFound( $template )
@@ -181,7 +182,17 @@
 			
 		}
 
+		public static function Json( $data )
+		{
+			header("Content-Type: application/json; charset=utf-8");
+			if( gettype($data) !== "array" ) $data = array("response"=>$data);
+			$headers = array(
+				"Content_type"=>"application/json",
+				"time_stamp"=>date("d-m-Y")." ".date("h:m:s"),
+				"data"=> $data
+			);
+			print_r(json_encode($headers));
+		}
 		
 	}
 ?>
-
