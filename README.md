@@ -71,7 +71,7 @@ Se o jwt for inválido irá cortar o fluxo da aplicação e gerar um erro
 
 ```
 	Router::getJson();
-	
+	Obrigatório ser Stringify
 	### Ex:
 	
 	Router::post('/recebejson', function(){
