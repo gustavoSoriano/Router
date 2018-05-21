@@ -35,9 +35,7 @@
 		} 
 
 		private static function testURI($endPoint, $_callback)
-		{
-			self::$input = file_get_contents("php://input");
-			
+		{			
 			//recupera o nome do dirroot, pois esta na uri. Mas é necessário remover \app\server
 			self::$folder = __DIR__;
 			self::$folder = str_replace("\app\server\controllers", "", self::$folder);
@@ -57,6 +55,8 @@
 			//são do mesmo tamanho e os parametros não dinamicos são iguais?
 			if( $sizeURI == $sizeEndPoint and self::compareParams($arrURI, $arrEndPoint) )
 			{
+				self::$input = file_get_contents("php://input");
+				
 				//se chegar aqui, quer dizer que o endpoint é válido
 				//basta devolver os parametros dinamicos e chamar o callback
 				self::mountParamsDinamic($arrURI, $arrEndPoint);
