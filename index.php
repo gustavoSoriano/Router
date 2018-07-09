@@ -28,13 +28,8 @@
 	});
 
 	//recebe post por x-www-form-urlencoded
-	Router::put('/recebeDados', function($dados){
-		print_r($dados);
-	});
-
-	//recebe post por x-www-form-urlencoded
-	Router::post('/recebeDados', function($dados){
-		print_r($dados);
+	Router::post('/recebeDados', function(){
+		print_r($_POST);
 	});
 
 //JWT
