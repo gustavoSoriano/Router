@@ -40,7 +40,7 @@ Se o jwt for inválido irá cortar o fluxo da aplicação e gerar um erro
 ```
 
 
-## HTTP GET Com parâmetros dinâmicos no endpoint | {paramDinamic}
+## HTTP GET Com parâmetros dinâmicos no endpoint | {parametro}
 
 ```
 	Router::get('/idUsuario/{cpf}', function($params){
@@ -52,26 +52,16 @@ Se o jwt for inválido irá cortar o fluxo da aplicação e gerar um erro
 ## HTTP POST | x-www-form-urlencoded
 
 ```
-	Router::post('/dados', function($dados){
-		print_r($dados);
+	Router::post('/dados', function(){
+		print_r($_POST);
 	});
 ```
-
-
-## HTTP PUT | x-www-form-urlencoded
-
-```
-	Router::put('/dados', function($dados){
-		print_r($dados);
-	});
-```
-
 
 ## Recuperando Json no corpo da requisição
 
 ```
 	Router::getJson();
-	Obrigatório ser Stringify
+	Obrigatório Stringify
 	### Ex:
 	
 	Router::post('/recebejson', function(){
@@ -79,6 +69,43 @@ Se o jwt for inválido irá cortar o fluxo da aplicação e gerar um erro
 		echo $dados->nome;
 	});
 ```
+
+
+
+## HTTP POST | JSON
+
+```
+	Router::post('/dados', function(){
+		var_dump( Router::getJson() );
+	});
+```
+
+## HTTP PUT | JSON
+
+```
+	Router::put('/dados', function(){
+		var_dump( Router::getJson() );
+	});
+```
+
+
+## HTTP DELETE
+
+```
+	Router::delete('/dados/{cod}', function($params){
+		echo $params->cod;
+	});
+```
+
+
+
+## Router::json | Resposta em json
+```
+	Router::get('/dados', function(){
+		Router::json( array("usuario" => "soriano") );
+	});
+```
+
 
 
 ## Configuração Dev | error_reporting, display_errors 
