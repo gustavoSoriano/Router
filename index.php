@@ -1,12 +1,12 @@
 ﻿<?php
-	header('Access-Control-Allow-Origin: *');
-	require_once('./Router.php');
+	require_once('./Config.php');
+
+	use server\Router;
 	Router::dev();
-	
 
 //TEMPLATES
 	Router::get('/', function(){
-		Router::view("home.html", ["#{titulo}#" => "Bem vindo ao site"] );
+		Router::view("client/home.html", ["#{titulo}#" => "Bem vindo ao site"] );
 	});
 
 //REST
@@ -41,10 +41,10 @@
 	Router::get('/restrict', function(){
 		//Valida token
 		Router::validateJwt(); //check Authorization
-
+		
 		echo "Se chegou aqui o jwt é Válido";
 	});
 
 
 //ERROR 404 - Manter sempre em último
-	Router::notFound("notFound.html");
+	Router::notFound("client/notFound.html");
